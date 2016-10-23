@@ -15,13 +15,27 @@ Why does this file exist, and why not put this in __main__?
   Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
 import argparse
+from vpnmenu import mgr
+from dynmen.rofi import Rofi as _Rofi
+from collections import OrderedDict
 
 
-parser = argparse.ArgumentParser(description='Command description.')
-parser.add_argument('names', metavar='NAME', nargs=argparse.ZERO_OR_MORE,
-                    help="A name of something.")
 
+def parse_args(args=None):
+    parser = argparse.ArgumentParser(description='Connect to your VPNs defined in NetworkManager using dynamic menus.')
+    parser.add_argument('names', metavar='NAME', nargs=argparse.ZERO_OR_MORE,
+                        help="A name of something.")
+    args = parser.parse_args(args=args)
+    return args
 
 def main(args=None):
-    args = parser.parse_args(args=args)
-    print(args.names)
+    args = parse_args(args=args)
+    conns = mgr.all_conns()
+    od = OrderedDict(((x.display_name, x) for x in conns))
+    rofi = _Rofi()
+    rofi.case_insensitive = True
+    out = rofi(od)
+    print(out)
+    
+    
+
