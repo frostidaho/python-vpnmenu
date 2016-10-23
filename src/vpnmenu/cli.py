@@ -15,10 +15,6 @@ Why does this file exist, and why not put this in __main__?
   Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
 import argparse
-from vpnmenu import mgr
-from dynmen.rofi import Rofi as _Rofi
-from collections import OrderedDict
-
 
 
 def parse_args(args=None):
@@ -28,14 +24,28 @@ def parse_args(args=None):
     args = parser.parse_args(args=args)
     return args
 
+def get_all_vpn_conns():
+    """Get vpn connections as an ordered dict
+
+    The keys are the display values for the dynamic menu.
+    The values are the corresponding objects.
+    """
+    from vpnmenu.mgr import all_conns
+    conns = all_conns()
+
+    from collections import OrderedDict
+    return OrderedDict(((x.display_name, x) for x in conns))
+
 def main(args=None):
     args = parse_args(args=args)
-    conns = mgr.all_conns()
-    od = OrderedDict(((x.display_name, x) for x in conns))
-    rofi = _Rofi()
-    rofi.case_insensitive = True
-    out = rofi(od)
-    print(out)
-    
-    
 
+    from dynmen.rofi import Rofi as _Rofi
+    rofi = _Rofi(case_insensitive=True)
+    out = rofi(get_all_vpn_conns())
+    if out.returncode != 0:
+        import sys
+        print(out, file=sys.stderr)
+        return out.returncode
+    vpn_conn = out.value
+    vpn_conn.toggle()
+    return 0

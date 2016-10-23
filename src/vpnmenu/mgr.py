@@ -107,6 +107,13 @@ class VpnConn(object):
         else:
             raise ConnectionError('vpn is active multiple times: {}'.format(active))
 
+    def toggle(self):
+        status = self.get_status()
+        if status.active:
+            self.stop()
+        else:
+            self.start()
+
     def start(self):
         status = self.get_status()
         if status.active:
