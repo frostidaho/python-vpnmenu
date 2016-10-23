@@ -11,15 +11,15 @@ from collections import namedtuple as _namedtuple
 from functools import lru_cache as _lru_cache
 from dbus import DBusException as _DBusException
 
-def uniq(iterable, attr=None):
-    "Yield uniqe elements (item or item.attr) in iterable"
+
+def _uniq(iterable):
+    "Yield uniqe elements in iterable"
     seen = set()
     for item in iterable:
         if item not in seen:
             seen.add(item)
             yield item
 
-                
 @_lru_cache()
 def get_vpn_conns():
     def _get_vpn_conns():
@@ -28,7 +28,6 @@ def get_vpn_conns():
             if csettings['connection']['type'] == 'vpn':
                 yield VpnConn(conn)
     return list(_get_vpn_conns())
-
 
 def _do_wait(fn, *exceptions, initial_sleep=0.02):
     "Call fn until it doesn't raise any exceptions & return output"
@@ -136,14 +135,19 @@ class ActiveVpnConn(VpnConn):
     def display_name(self):
         return '• {}'.format(self.name)
 
+def all_conns():
+    """Get a list of all active & available vpn connections
+
+    active connections listed first and are of type ActiveVpnConn
+    available connections are of type VpnConn
+
+    both classes are functionally identital, except that
+    their display_name attributes are different
+    """
+    from itertools import chain
+    conns = _uniq(chain(get_active_vpn_conns(), sorted(get_vpn_conns())))
+    return list(conns)
 
 if __name__ == '__main__':
-    from itertools import chain
-    conns = uniq(chain(get_active_vpn_conns(), sorted(get_vpn_conns())))
-    for conn in conns:
+    for conn in all_conns():
         print(conn.display_name)
-    # z = list(get_vpn_conns())
-    # east = z[-8]
-    # texas  = z[-9]
-    # zz = list(get_active_vpn_conns())
-    # x = zz[0]
