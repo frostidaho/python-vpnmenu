@@ -68,14 +68,23 @@ def main(args=None):
     from dynmen.rofi import Rofi
     rofi = Rofi()
     settings = rofi.meta_settings
-    add_menu_flags(settings['Flag'])
-    add_menu_opts(settings['Option'])
+    flags = filter(
+        lambda x: x.name not in ('case_insensitive', 'password'),
+        settings['Flag'],
+    )
+    add_menu_flags(flags)
+    opts = filter(
+        lambda x: x.name not in ('separator', 'prompt', 'element_height'),
+        settings['Option'],
+    )
+    add_menu_opts(opts)
     args = parse_args(args=args)
     from pprint import pprint
     pprint(args)
     for k,v in vars(args).items():
         setattr(rofi, k, v)
-
+    rofi.case_insensitive = True
+    rofi.prompt = 'Toggle VPN:'
     out = rofi(get_all_vpn_conns())
     if out.returncode != 0:
         import sys
