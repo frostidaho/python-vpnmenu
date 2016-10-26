@@ -82,7 +82,8 @@ def main(args=None):
     from pprint import pprint
     pprint(args)
     for k,v in vars(args).items():
-        setattr(rofi, k, v)
+        if v is not None:
+            setattr(rofi, k, v)
     rofi.case_insensitive = True
     rofi.prompt = 'Toggle VPN:'
     out = rofi(get_all_vpn_conns())
