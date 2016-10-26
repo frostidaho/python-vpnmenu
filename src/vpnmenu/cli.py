@@ -29,8 +29,8 @@ import argparse
 parser = argparse.ArgumentParser(description='Connect to your VPNs defined in NetworkManager using dynamic menus.')
 
 def parse_args(args=None):
-    parser.add_argument('names', metavar='NAME', nargs=argparse.ZERO_OR_MORE,
-                        help="A name of something.")
+    # parser.add_argument('names', metavar='NAME', nargs=argparse.ZERO_OR_MORE,
+    #                     help="A name of something.")
     args = parser.parse_args(args=args)
     return args
 
@@ -40,21 +40,17 @@ def add_menu_flags(flags):
         flagtxt = '--' + name.replace('_', '-')
         parser.add_argument(flagtxt, action='store_true', help=flag.info)
 
-def add_menu_opt(descr):
-    # print(descr)
-    from dynmen.common import No
-    name = descr.name
-    name = '--' + name.replace('_', '-')
-    d = dict(help=descr.info)
-    if descr.default != No.default:
-        d['default'] = descr.default
-    if descr.type != No.type:
-        d['type'] = descr.type
-    parser.add_argument(name, **d)
-    # for flag in flags:
-    #     name = flag.name
-    #     flagtxt = '--' + name.replace('_', '-')
-    #     parser.add_argument(flagtxt, action='store_true', help=flag.info)
+def add_menu_opts(opts):
+    from dynmen.common import Default
+    for descr in opts:
+        name = descr.name
+        name = '--' + name.replace('_', '-')
+        d = dict(help=descr.info)
+        if descr.default != Default.value:
+            d['default'] = descr.default
+        if descr.type != Default.type:
+            d['type'] = descr.type
+        parser.add_argument(name, **d)
 
 def get_all_vpn_conns():
     """Get vpn connections as an ordered dict
@@ -69,30 +65,16 @@ def get_all_vpn_conns():
     return OrderedDict(((x.display_name, x) for x in conns))
 
 def main(args=None):
-    from dynmen import ValidationError
     from dynmen.rofi import Rofi
-    from dynmen.common import Flag, Option
     rofi = Rofi()
-    settings = rofi.default_settings
-    for s in settings:
-        if s.clsname == 'Flag':
-            add_menu_flags([s])
-        elif s.clsname == 'Option':
-            add_menu_opt(getattr(Rofi, s.name))
-
-        print(s)
-    # flags = [x for x in settings if x.type is Flag]
-    # flags = [x for x in settings if x.type == 'Flag']
-    # add_menu_flags(flags)
+    settings = rofi.meta_settings
+    add_menu_flags(settings['Flag'])
+    add_menu_opts(settings['Option'])
     args = parse_args(args=args)
     from pprint import pprint
     pprint(args)
     for k,v in vars(args).items():
         setattr(rofi, k, v)
-        # try:
-        #     setattr(rofi, k, v)
-        # except ValidationError as e:
-        #     print(e)
 
     out = rofi(get_all_vpn_conns())
     if out.returncode != 0:
