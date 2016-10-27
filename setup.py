@@ -66,6 +66,7 @@ setup(
     ],
     install_requires=[
         'python-networkmanager',
+        'dynmen>=0.0.2',
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],
     extras_require={
