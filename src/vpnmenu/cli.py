@@ -48,8 +48,8 @@ def add_menu_opts(opts):
         d = dict(help=descr.info)
         if descr.default != Default.value:
             d['default'] = descr.default
-        if descr.type != Default.type:
-            d['type'] = descr.type
+        if descr.dtype != Default.dtype:
+            d['type'] = descr.dtype
         parser.add_argument(name, **d)
 
 def get_all_vpn_conns():
