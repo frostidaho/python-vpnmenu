@@ -50,7 +50,7 @@ def main(args=None):
     from dynmen.rofi import Rofi
     rofi = Rofi()
     rofi.dmenu = True
-    rofi.case_insensitive = True
+    rofi.i = True
     rofi.p = 'Toggle VPN:'
 
     args = parse_args(args=args)
