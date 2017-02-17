@@ -34,24 +34,6 @@ def parse_args(args=None):
     args = parser.parse_args(args=args)
     return args
 
-def add_menu_flags(flags):
-    for flag in flags:
-        name = flag.name
-        flagtxt = '--' + name.replace('_', '-')
-        parser.add_argument(flagtxt, action='store_true', help=flag.info)
-
-def add_menu_opts(opts):
-    from dynmen.common import Default
-    for descr in opts:
-        name = descr.name
-        name = '--' + name.replace('_', '-')
-        d = dict(help=descr.info)
-        if descr.default != Default.value:
-            d['default'] = descr.default
-        if descr.dtype != Default.dtype:
-            d['type'] = descr.dtype
-        parser.add_argument(name, **d)
-
 def get_all_vpn_conns():
     """Get vpn connections as an ordered dict
 
@@ -67,25 +49,16 @@ def get_all_vpn_conns():
 def main(args=None):
     from dynmen.rofi import Rofi
     rofi = Rofi()
-    settings = rofi.meta_settings
-    flags = filter(
-        lambda x: x.name not in ('case_insensitive', 'password'),
-        settings['Flag'],
-    )
-    add_menu_flags(flags)
-    opts = filter(
-        lambda x: x.name not in ('separator', 'prompt', 'element_height'),
-        settings['Option'],
-    )
-    add_menu_opts(opts)
+    rofi.dmenu = True
+    rofi.case_insensitive = True
+    rofi.p = 'Toggle VPN:'
+
     args = parse_args(args=args)
     from pprint import pprint
     pprint(args)
     for k,v in vars(args).items():
         if v is not None:
             setattr(rofi, k, v)
-    rofi.case_insensitive = True
-    rofi.prompt = 'Toggle VPN:'
     out = rofi(get_all_vpn_conns())
     if out.returncode != 0:
         import sys
