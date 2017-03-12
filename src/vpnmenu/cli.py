@@ -46,24 +46,29 @@ def get_all_vpn_conns():
     from collections import OrderedDict
     return OrderedDict(((x.display_name, x) for x in conns))
 
-def main(args=None):
-    from dynmen.rofi import Rofi
-    rofi = Rofi()
-    rofi.dmenu = True
-    rofi.i = True
-    rofi.p = 'Toggle VPN:'
 
+def build_cmd():
+    def get_menu_exec():
+        from distutils.spawn import find_executable
+        return find_executable('rofi') or find_executable('dmenu')
+
+    basecmd = get_menu_exec()
+    cmd = [basecmd]
+    if basecmd.endswith('rofi'):
+        cmd.append('-dmenu')
+    else:
+        cmd.extend(['-l', '10'])
+    cmd.extend(['-i', '-p', 'Toggle VPN:'])
+    return cmd
+
+    
+def main(args=None):
     args = parse_args(args=args)
-    from pprint import pprint
-    pprint(args)
-    for k,v in vars(args).items():
-        if v is not None:
-            setattr(rofi, k, v)
-    out = rofi(get_all_vpn_conns())
-    if out.returncode != 0:
-        import sys
-        print(out, file=sys.stderr)
-        return out.returncode
+
+    from dynmen import Menu
+    menu = Menu(build_cmd())
+    
+    out = menu(get_all_vpn_conns())
     vpn_conn = out.value
     vpn_conn.toggle()
     return 0

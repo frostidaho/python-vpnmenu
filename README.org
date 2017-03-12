@@ -1,26 +1,15 @@
 * Overview
-Connect to your VPNs defined in NetworkManager using dynamic menus
+Connect to VPNs defined in NetworkManager using either [[https://github.com/DaveDavenport/rofi][rofi]] or [[http://tools.suckless.org/dmenu/][dmenu]]
 
 * Usage
 
 #+BEGIN_EXAMPLE
-usage: vpnmenu [-h] [--fullscreen] [--hide-scrollbar]
-               [--border-width BORDER_WIDTH] [--columns COLUMNS] [--font FONT]
-               [--lines LINES] [--opacity OPACITY]
+usage: vpnmenu [-h]
 
 Connect to your VPNs defined in NetworkManager using dynamic menus.
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --fullscreen          Display menu using entire screen
-  --hide-scrollbar      Hide the scrollbar on the right side
-  --border-width BORDER_WIDTH
-                        Set border width in pixels.
-  --columns COLUMNS     Number of columns to display.
-  --font FONT           Font to use with rofi
-  --lines LINES         Number of lines to display. (Does not work with
-                        fullscreen)
-  --opacity OPACITY     Set window opacity (0-100).
+  -h, --help  show this help message and exit
 #+END_EXAMPLE
 
 The following is a usage example
@@ -39,3 +28,9 @@ git clone https://github.com/frostidaho/python-vpnmenu.git
 pip install --user ./python-vpnmenu
 #+END_SRC
 
+* Dependencies
+
+~vpnmenu~ depends on 
+- rofi or dmenu
+- python-networkmanager
+- [[https://github.com/frostidaho/dynmen][dynmen]]
