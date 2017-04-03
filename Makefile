@@ -61,14 +61,14 @@ test: ## run tests for python3
 	@echo "Running tests for python3"
 	@echo "----------------------------------------"
 	eval `which py.test-3 || which py.test` "$(project_dir)tests/"
-	
+
 
 test2: ## run tests for python2
 	@echo "----------------------------------------"
 	@echo "Running tests for python2"
 	@echo "----------------------------------------"
 	eval `which py.test-2 || which py.test2` "$(project_dir)tests/"
-	
+
 
 
 docs: ## generate Sphinx HTML documentation, including API docs
@@ -128,12 +128,12 @@ uninstall: ## uninstall the package - python3
 	@echo "----------------------------------------"
 	@echo -e "Uninstalling vpnmenu - may need root\n\t `pip3 --version`"
 	@echo "----------------------------------------"
-	-pip3 uninstall vpnmenu
+	-yes | pip3 uninstall vpnmenu
 
 uninstall2: ## uninstall the package - python2
 	@echo "----------------------------------------"
 	@echo -e "Uninstalling vpnmenu - may need root\n\t `pip2 --version`"
 	@echo "----------------------------------------"
-	-pip2 uninstall vpnmenu
+	-yes | pip2 uninstall vpnmenu
 
 
