@@ -58,7 +58,7 @@ def build_cmd():
         cmd.append('-dmenu')
     else:
         cmd.extend(['-l', '10'])
-    cmd.extend(['-i', '-p', 'Toggle VPN:'])
+    cmd.extend(['-i', '-p', 'Toggle VPN'])
     return cmd
 
     
