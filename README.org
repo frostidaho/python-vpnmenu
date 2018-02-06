@@ -17,7 +17,7 @@ The following is a usage example
 vpnmenu
 #+END_SRC
 
-[[https://user-images.githubusercontent.com/8061555/35835278-c6d64c02-0aa7-11e8-94e9-18c78aea4d5f.png][vpnmenu_example]]
+[[file:https://user-images.githubusercontent.com/8061555/35835278-c6d64c02-0aa7-11e8-94e9-18c78aea4d5f.png]]
 
 
 * Installation
