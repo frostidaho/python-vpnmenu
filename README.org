@@ -1,5 +1,7 @@
+#+TITLE: vpnmenu
 * Overview
-Connect to VPNs defined in NetworkManager using either [[https://github.com/DaveDavenport/rofi][rofi]] or [[http://tools.suckless.org/dmenu/][dmenu]]
+~vpnmenu~ let's you quickly select, connect, and disconnect from VPNs defined in NetworkManager using either [[https://github.com/DaveDavenport/rofi][rofi]] or [[http://tools.suckless.org/dmenu/][dmenu]].
+- website/repo :: https://github.com/frostidaho/python-vpnmenu
 
 * Usage
 
@@ -16,9 +18,7 @@ The following is a usage example
 #+BEGIN_SRC sh
 vpnmenu
 #+END_SRC
-
 [[file:https://user-images.githubusercontent.com/8061555/35835278-c6d64c02-0aa7-11e8-94e9-18c78aea4d5f.png]]
-
 
 * Installation
 
@@ -30,7 +30,7 @@ pip install --user ./python-vpnmenu
 
 * Dependencies
 
-~vpnmenu~ depends on 
-- rofi or dmenu
-- python-networkmanager
+~vpnmenu~ depends on
+- [[https://github.com/DaveDavenport/rofi][rofi]] or [[http://tools.suckless.org/dmenu/][dmenu]]
+- [[https://github.com/seveas/python-networkmanager][python-networkmanager]]
 - [[https://github.com/frostidaho/dynmen][dynmen]]
