@@ -3,23 +3,12 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import io
-import re
 from glob import glob
 from os.path import basename
-from os.path import dirname
-from os.path import join
 from os.path import splitext
 
 from setuptools import find_packages
 from setuptools import setup
-
-
-def read(*names, **kwargs):
-    return io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8')
-    ).read()
 
 
 setup(
@@ -27,10 +16,7 @@ setup(
     version='0.1.0',
     license='BSD',
     description='Connect to your VPNs defined in NetworkManager using dynamic menus',
-    long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.org')),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
-    ),
+    long_description='Connect to your VPNs defined in NetworkManager using dynamic menus',
     author='Idaho Frost',
     author_email='frostidaho@gmail.com',
     url='https://github.com/frostidaho/python-vpnmenu',
